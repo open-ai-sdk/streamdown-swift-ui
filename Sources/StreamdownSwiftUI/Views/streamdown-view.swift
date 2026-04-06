@@ -46,7 +46,7 @@ public struct StreamdownView: View {
     }
 
     public var body: some View {
-        LazyVStack(alignment: .leading, spacing: theme.blockSpacing) {
+        VStack(alignment: .leading, spacing: theme.blockSpacing) {
             ForEach(Array(parser.blocks.enumerated()), id: \.element.id) { index, block in
                 let isLast = index == parser.blocks.count - 1
                 blockView(for: block, isLast: isLast)
