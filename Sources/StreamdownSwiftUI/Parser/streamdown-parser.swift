@@ -1,4 +1,5 @@
 import Foundation
+import Observation
 
 /// Incremental, stream-aware markdown parser.
 /// Maintains internal state to avoid re-parsing completed blocks.
@@ -10,6 +11,7 @@ import Foundation
 ///   // Or for true incremental:
 ///   let blocks = parser.append(delta: newDelta)
 @MainActor
+@Observable
 public final class StreamdownParser {
     /// All parsed blocks. Completed blocks are stable; last block may change.
     public private(set) var blocks: [MarkdownBlock] = []
