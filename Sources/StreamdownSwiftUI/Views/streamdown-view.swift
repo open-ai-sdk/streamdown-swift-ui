@@ -57,7 +57,16 @@ public struct StreamdownView: View {
         .animation(animated ? .easeIn(duration: 0.15) : nil, value: parser.blocks.count)
         .onChange(of: markdown) { _, newValue in
             if newValue != parser.fullText {
-                parser.parse(newValue)
+                if isAnimating, newValue.hasPrefix(parser.fullText) {
+                    // Incremental append: only re-parse the new suffix
+                    let delta = String(newValue.dropFirst(parser.fullText.count))
+                    if !delta.isEmpty {
+                        parser.append(delta: delta)
+                    }
+                } else {
+                    // Full reset: text changed non-incrementally (e.g. edit, initial load)
+                    parser.parse(newValue)
+                }
             }
         }
         .onChange(of: parser.blocks.count) { oldCount, _ in
