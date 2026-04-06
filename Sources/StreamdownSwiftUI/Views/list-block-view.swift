@@ -4,25 +4,36 @@ import SwiftUI
 public struct BulletListBlockView: View {
     let items: [String]
     let isStreaming: Bool
+    let parseIncompleteMarkdown: Bool
+    let caret: StreamdownCaret?
     let theme: StreamdownTheme
 
-    public init(items: [String], isStreaming: Bool = false, theme: StreamdownTheme = .default) {
+    public init(
+        items: [String],
+        isStreaming: Bool = false,
+        parseIncompleteMarkdown: Bool = true,
+        caret: StreamdownCaret? = .block,
+        theme: StreamdownTheme = .default
+    ) {
         self.items = items
         self.isStreaming = isStreaming
+        self.parseIncompleteMarkdown = parseIncompleteMarkdown
+        self.caret = caret
         self.theme = theme
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: theme.listItemSpacing) {
             ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                let isLastItem = isStreaming && index == items.count - 1
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("\u{2022}")
                         .foregroundStyle(theme.listBulletColor)
                     HStack(spacing: 0) {
-                        Text(InlineParser.parse(item, isStreaming: isStreaming && index == items.count - 1))
+                        Text(InlineParser.parse(item, isStreaming: isLastItem && parseIncompleteMarkdown))
                             .textSelection(.enabled)
-                        if isStreaming && index == items.count - 1 {
-                            StreamingCursorView()
+                        if isLastItem, let caret {
+                            StreamingCursorView(style: caret)
                         }
                     }
                 }
@@ -35,25 +46,36 @@ public struct BulletListBlockView: View {
 public struct NumberedListBlockView: View {
     let items: [String]
     let isStreaming: Bool
+    let parseIncompleteMarkdown: Bool
+    let caret: StreamdownCaret?
     let theme: StreamdownTheme
 
-    public init(items: [String], isStreaming: Bool = false, theme: StreamdownTheme = .default) {
+    public init(
+        items: [String],
+        isStreaming: Bool = false,
+        parseIncompleteMarkdown: Bool = true,
+        caret: StreamdownCaret? = .block,
+        theme: StreamdownTheme = .default
+    ) {
         self.items = items
         self.isStreaming = isStreaming
+        self.parseIncompleteMarkdown = parseIncompleteMarkdown
+        self.caret = caret
         self.theme = theme
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: theme.listItemSpacing) {
             ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                let isLastItem = isStreaming && index == items.count - 1
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("\(index + 1).")
                         .foregroundStyle(theme.listBulletColor)
                     HStack(spacing: 0) {
-                        Text(InlineParser.parse(item, isStreaming: isStreaming && index == items.count - 1))
+                        Text(InlineParser.parse(item, isStreaming: isLastItem && parseIncompleteMarkdown))
                             .textSelection(.enabled)
-                        if isStreaming && index == items.count - 1 {
-                            StreamingCursorView()
+                        if isLastItem, let caret {
+                            StreamingCursorView(style: caret)
                         }
                     }
                 }

@@ -5,12 +5,20 @@ public struct CodeBlockView: View {
     let language: String?
     let content: String
     let isComplete: Bool
+    let caret: StreamdownCaret?
     let theme: StreamdownTheme
 
-    public init(language: String?, content: String, isComplete: Bool, theme: StreamdownTheme = .default) {
+    public init(
+        language: String?,
+        content: String,
+        isComplete: Bool,
+        caret: StreamdownCaret? = nil,
+        theme: StreamdownTheme = .default
+    ) {
         self.language = language
         self.content = content
         self.isComplete = isComplete
+        self.caret = caret
         self.theme = theme
     }
 
@@ -30,8 +38,8 @@ public struct CodeBlockView: View {
                         .font(.system(size: theme.codeFontSize, design: .monospaced))
                         .foregroundStyle(theme.codeTextColor)
                         .textSelection(.enabled)
-                    if !isComplete {
-                        StreamingCursorView()
+                    if !isComplete, let caret {
+                        StreamingCursorView(style: caret)
                     }
                 }
                 .padding(theme.codePadding)
