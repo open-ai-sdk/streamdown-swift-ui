@@ -35,7 +35,9 @@ public final class StreamdownParser {
         reset()
         fullText = markdown
         let parsed = parseBlocks(from: markdown)
-        blocks = parsed
+        blocks = parsed.enumerated().map { i, block in
+            withID(block, id: blockID(for: i))
+        }
         return blocks
     }
 
