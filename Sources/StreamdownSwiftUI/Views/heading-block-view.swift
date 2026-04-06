@@ -27,6 +27,4 @@ public struct HeadingBlockView: View {
         default: return .title3
         }
     }
-
-
 }

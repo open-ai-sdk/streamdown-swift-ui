@@ -75,17 +75,28 @@ public struct StreamdownView: View {
         isAnimating && caret != nil
     }
 
+    private var activeCaret: StreamdownCaret? {
+        showCaret ? caret : nil
+    }
+
     @ViewBuilder
     private func blockView(for block: MarkdownBlock, isLast: Bool) -> some View {
         let streaming = isAnimating && isLast
-        let incompleteMarkdown = parseIncompleteMarkdown && isAnimating
+        let incomplete = parseIncompleteMarkdown && isAnimating
+        let caretStyle = isLast ? activeCaret : nil
 
         switch block {
         case .text(_, let content):
             if let custom = textRenderer {
                 custom(content, streaming, theme)
             } else {
-                TextBlockView(content: content, isStreaming: streaming, parseIncompleteMarkdown: incompleteMarkdown, caret: showCaret && isLast ? caret : nil, theme: theme)
+                TextBlockView(
+                    content: content,
+                    isStreaming: streaming,
+                    parseIncompleteMarkdown: incomplete,
+                    caret: caretStyle,
+                    theme: theme
+                )
             }
 
         case .heading(_, let level, let content):
@@ -99,21 +110,39 @@ public struct StreamdownView: View {
             if let custom = codeRenderer {
                 custom(language, content, isComplete, theme)
             } else {
-                CodeBlockView(language: language, content: content, isComplete: isComplete, caret: showCaret && isLast ? caret : nil, theme: theme)
+                CodeBlockView(
+                    language: language,
+                    content: content,
+                    isComplete: isComplete,
+                    caret: caretStyle,
+                    theme: theme
+                )
             }
 
         case .bulletList(_, let items):
             if let custom = bulletListRenderer {
                 custom(items, streaming, theme)
             } else {
-                BulletListBlockView(items: items, isStreaming: streaming, parseIncompleteMarkdown: incompleteMarkdown, caret: showCaret && isLast ? caret : nil, theme: theme)
+                BulletListBlockView(
+                    items: items,
+                    isStreaming: streaming,
+                    parseIncompleteMarkdown: incomplete,
+                    caret: caretStyle,
+                    theme: theme
+                )
             }
 
         case .numberedList(_, let items):
             if let custom = numberedListRenderer {
                 custom(items, streaming, theme)
             } else {
-                NumberedListBlockView(items: items, isStreaming: streaming, parseIncompleteMarkdown: incompleteMarkdown, caret: showCaret && isLast ? caret : nil, theme: theme)
+                NumberedListBlockView(
+                    items: items,
+                    isStreaming: streaming,
+                    parseIncompleteMarkdown: incomplete,
+                    caret: caretStyle,
+                    theme: theme
+                )
             }
 
         case .table(_, let headers, let rows):

@@ -76,13 +76,11 @@ public enum InlineParser {
     private static func countSingleStars(in text: String) -> Int {
         var count = 0
         let chars = Array(text)
-        for i in 0..<chars.count {
-            if chars[i] == "*" {
-                let prevIsStar = i > 0 && chars[i - 1] == "*"
-                let nextIsStar = i + 1 < chars.count && chars[i + 1] == "*"
-                if !prevIsStar && !nextIsStar {
-                    count += 1
-                }
+        for i in 0..<chars.count where chars[i] == "*" {
+            let prevIsStar = i > 0 && chars[i - 1] == "*"
+            let nextIsStar = i + 1 < chars.count && chars[i + 1] == "*"
+            if !prevIsStar && !nextIsStar {
+                count += 1
             }
         }
         return count
