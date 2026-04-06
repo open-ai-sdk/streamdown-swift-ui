@@ -29,7 +29,7 @@ public struct BulletListBlockView: View {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("\u{2022}")
                         .foregroundStyle(theme.listBulletColor)
-                    HStack(spacing: 0) {
+                    HStack(alignment: .bottom, spacing: 0) {
                         Text(InlineParser.parse(item, isStreaming: isLastItem && parseIncompleteMarkdown))
                             .textSelection(.enabled)
                         if isLastItem, let caret {
@@ -71,7 +71,7 @@ public struct NumberedListBlockView: View {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("\(index + 1).")
                         .foregroundStyle(theme.listBulletColor)
-                    HStack(spacing: 0) {
+                    HStack(alignment: .bottom, spacing: 0) {
                         Text(InlineParser.parse(item, isStreaming: isLastItem && parseIncompleteMarkdown))
                             .textSelection(.enabled)
                         if isLastItem, let caret {

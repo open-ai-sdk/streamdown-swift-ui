@@ -23,7 +23,7 @@ public struct TextBlockView: View {
     }
 
     public var body: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .bottom, spacing: 0) {
             Text(InlineParser.parse(content, isStreaming: isStreaming && parseIncompleteMarkdown))
                 .textSelection(.enabled)
             if isStreaming, let caret {

@@ -33,7 +33,7 @@ public struct CodeBlockView: View {
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 0) {
+                HStack(alignment: .bottom, spacing: 0) {
                     Text(content)
                         .font(.system(size: theme.codeFontSize, design: .monospaced))
                         .foregroundStyle(theme.codeTextColor)
